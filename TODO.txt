@@ -1,0 +1,65 @@
+
+controls
+Reset rotation
+start treads slow and then speed up
+
+
+physics
+✓ FIX jumping around! Log out OnTriggerExit, OnCollisionExit, and all others? Need to debug!!!
+
+
+
+add terrain
+
+
+
+add more BoxColliders and make bucket into an actual bucket
+touching pickups turns them into physics objects
+must drop off pickups into a circle in the middle of the level
+
+
+
+
+
+reset after 10 seconds on the ground or fallen over edge
+reset Player if flipped on its side or fallen over edge
+
+
+
+
+
+
+UI elements
+text
+
+
+menu
+tutorial text
+warning about gamepad missing
+
+
+fix graphics
+✓ Take out seat
+bad shadows?
+
+
+particle systems
+exhaust
+
+
+haptic feedback for collisions?
+
+
+add skybox
+
+
+
+add sound fx
+music
+
+
+
+fix missing materials on hex
+Circle001 ?
+
+

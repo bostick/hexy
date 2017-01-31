@@ -1,0 +1,13 @@
+
+hexy operator
+
+dev journal
+
+
+jan 29, 2017
+
+was just having a hell of a time with physics until I tried lowering the center of mass
+
+moving the center of mass to the ground really stabilizes the excavator!
+
+
