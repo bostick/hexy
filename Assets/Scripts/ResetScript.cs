@@ -9,23 +9,24 @@ using System.Collections;
 
 public class ResetScript : MonoBehaviour {
 
-	public ExcavatorScript excav;
+    //public ExcavatorScript excav;
+    public Animator anim;
 
 	public void BigArmPosition(int pos)//0 = down, 1 = middle, 2 = up
 	{
-		excav.anim.SetInteger("BigArmPosition", pos);
-		excav.anim.SetFloat("BigArmSpeed", 0f);
+		anim.SetInteger("BigArmPosition", pos);
+		anim.SetFloat("BigArmSpeed", 0f);
 	}
 
 	public void SmallArmPosition(int pos)//0 = down, 1 = middle, 2 = up
 	{
-		excav.anim.SetInteger("SmallArmPosition", pos);
-		excav.anim.SetFloat("SmallArmSpeed", 0f);
+		anim.SetInteger("SmallArmPosition", pos);
+		anim.SetFloat("SmallArmSpeed", 0f);
 	}
 
 	public void ShovelPosition(int pos)//0 = down, 1 = middle, 2 = up
 	{
-		excav.anim.SetInteger("ShovelPosition", pos);
-		excav.anim.SetFloat("ShovelSpeed", 0f);
+		anim.SetInteger("ShovelPosition", pos);
+		anim.SetFloat("ShovelSpeed", 0f);
 	}
 }

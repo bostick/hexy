@@ -10,6 +10,7 @@ physics
 
 
 add terrain
+recreate the Mathematica notebook for generating terrain
 
 
 
@@ -17,12 +18,28 @@ add more BoxColliders and make bucket into an actual bucket
 touching pickups turns them into physics objects
 must drop off pickups into a circle in the middle of the level
 
-
-
-
-
 reset after 10 seconds on the ground or fallen over edge
 reset Player if flipped on its side or fallen over edge
+
+
+
+add enemy
+make a prefab for common between player and enemy
+make sure prefab has colliders for everything
+fix negative box colliders
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -51,7 +68,7 @@ haptic feedback for collisions?
 
 
 add skybox
-
+night time?
 
 
 add sound fx
