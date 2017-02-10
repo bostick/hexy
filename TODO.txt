@@ -1,6 +1,5 @@
 
 controls
-Reset rotation
 start treads slow and then speed up
 
 
@@ -10,61 +9,48 @@ physics
 
 
 add terrain
-recreate the Mathematica notebook for generating terrain
+✓ recreate the Mathematica notebook for generating terrain
+make a level editor?
 
 
 
-add more BoxColliders and make bucket into an actual bucket
-touching pickups turns them into physics objects
-must drop off pickups into a circle in the middle of the level
-
-reset after 10 seconds on the ground or fallen over edge
-reset Player if flipped on its side or fallen over edge
+✓ add more BoxColliders and make bucket into an actual bucket
+✓ touching pickups turns them into physics objects
+✓ must drop off pickups into a circle in the middle of the level
 
 
 
 add enemy
-make a prefab for common between player and enemy
-make sure prefab has colliders for everything
-fix negative box colliders
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+✓ make a prefab for common between player and enemy
+✓ make sure prefab has colliders for everything
+✓ fix negative box colliders
 
 
 
 UI elements
+fade in and out
 text
 
 
 menu
 tutorial text
 warning about gamepad missing
+credits in the behind:
+   excavator model
+   music
 
 
 fix graphics
 ✓ Take out seat
-bad shadows?
 
 
 particle systems
 exhaust
-
-
-haptic feedback for collisions?
+moving the bucket
+the pickups have a fountain
+portals have a fountain
+a little dust cloud when pickups fall
+a little explosion when pickups are dropped into portal
 
 
 add skybox
@@ -73,10 +59,58 @@ night time?
 
 add sound fx
 music
+engine idling
+tracks driving
+backing up beep?
+platform  rotating
+boom moving
+stick moving
+bucket moving
+pickups hitting the ground
+bucket dragging on ground
 
 
+
+credits:
+excavator model
+music
+sound effects
+
+
+
+Closer to release:
+look at art guidelines? https://static.oculus.com/documents/oculus-store-art-guidelines.pdf
+
+
+
+
+
+
+LATER:
+
+actually use real physics for everything
+https://grovecodeblog.wordpress.com/2013/10/30/combining-physics-and-animation-in-unity/
+
+
+controls
+Reset rotation to 0 degrees
 
 fix missing materials on hex
 Circle001 ?
+
+
+fix graphics:
+bad shadows?
+
+haptic feedback for collisions?
+
+
+project bucket cutting line down on ground
+
+
+use Oculus SDK for audio
+
+
+
 
 
