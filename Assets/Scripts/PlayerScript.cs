@@ -262,4 +262,20 @@ public class PlayerScript : Excavator {
 			anim.SetFloat("ShovelSpeed", 0);
 		}
 	}
+
+	void OnTriggerEnter(Collider other) {
+
+		if (other.gameObject.CompareTag ("Pick Up")) {
+
+			SphereCollider c = other.gameObject.GetComponent<SphereCollider> ();
+			if (c.isTrigger) {
+				Rigidbody pickupRB = other.gameObject.GetComponent<Rigidbody> ();
+				pickupRB.isKinematic = false;
+				c.isTrigger = false;
+
+				//Debug.Log ("Trigger! yes " + ThisThing.tag);
+
+			}
+		}
+	}
 }
