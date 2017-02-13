@@ -183,7 +183,9 @@ public class PlayerScript : Excavator {
 
 
 		//---------------------------------------------------------ROTATE BODY----------------------------------------------------------
-		if (Input.GetKey(KeyCode.A) ||
+		
+        // Disable body rotation for now...
+        /*if (Input.GetKey(KeyCode.A) ||
 			OVRInput.Get(OVRInput.Button.DpadLeft)
 			)
 		{
@@ -200,6 +202,7 @@ public class PlayerScript : Excavator {
 		{
 			anim.SetFloat("RotateSpeed", 0f);
 		}
+        */
 
 		//-------------------------------------------------BIG ARM-----------------------------------------------------------------
 		if (
