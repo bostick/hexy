@@ -11,11 +11,11 @@ namespace VRStandardAssets.Menu
         [SerializeField] private int m_FrameRate = 30;                  // The number of times per second the image should change.
         [SerializeField] private MeshRenderer m_ScreenMesh;             // The mesh renderer who's texture will be changed.
         [SerializeField] private VRInteractiveItem m_VRInteractiveItem; // The VRInteractiveItem that needs to be looked at for the textures to play.
-        [SerializeField] private Texture m_AnimTexture;              // The textures that will be looped through.
+        [SerializeField] private Texture[] m_AnimTextures;              // The textures that will be looped through.
 
 
         private WaitForSeconds m_FrameRateWait;                         // The delay between frames.
-        //private int m_CurrentTextureIndex;                              // The index of the textures array.
+        private int m_CurrentTextureIndex;                              // The index of the textures array.
         private bool m_Playing;                                         // Whether the textures are currently being looped through.
 
 
@@ -61,10 +61,10 @@ namespace VRStandardAssets.Menu
             while (m_Playing)
             {
                 // Set the texture of the mesh renderer to the texture indicated by the index of the textures array.
-                m_ScreenMesh.material.mainTexture = m_AnimTexture;
+                m_ScreenMesh.material.mainTexture = m_AnimTextures[m_CurrentTextureIndex];
 
                 // Then increment the texture index (looping once it reaches the length of the textures array.
-                //m_CurrentTextureIndex = (m_CurrentTextureIndex + 1) % m_AnimTextures.Length;
+                m_CurrentTextureIndex = (m_CurrentTextureIndex + 1) % m_AnimTextures.Length;
 
                 // Wait for the next frame.
                 yield return m_FrameRateWait;
