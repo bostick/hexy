@@ -9,25 +9,35 @@ public class PortalController : MonoBehaviour {
 	public AudioClip dropped_clip;
 
 	void OnTriggerEnter(Collider other) {
-
-		if (other.gameObject.CompareTag ("Pick Up")) {
-
-			//if (ThisThing.CompareTag("Portal")) {
-				// Make Pickup disappear
-				other.gameObject.SetActive (false);
-
-				ParticleSystem sys = ThisThing.GetComponentInChildren<ParticleSystem> ();
-				sys.Stop ();
-
-				source.clip = dropped_clip;
-				source.Play ();
-
-				//Debug.Log ("Trigger! no " + ThisThing.tag + " " + ThisThing.is);
-			//}
-		} else {
-			//Debug.Log ("Trigger! something else " + ThisThing.tag);
+		if (other.gameObject.CompareTag ("BluePickup")) {
+			SphereCollider c = other.gameObject.GetComponent<SphereCollider> ();
+			if (c.isTrigger) {
+				Rigidbody pickupRB = other.gameObject.GetComponent<Rigidbody> ();
+				pickupRB.isKinematic = false;
+				c.isTrigger = false;
+			} else if (ThisThing.CompareTag("BluePortal")) {
+				MakePickupDisappear (other);
+				GameManager.instance.unlockBlue ();
+			}
+		} else if (other.gameObject.CompareTag ("RedPickup")) {
+			SphereCollider c = other.gameObject.GetComponent<SphereCollider> ();
+			if (c.isTrigger) {
+				Rigidbody pickupRB = other.gameObject.GetComponent<Rigidbody> ();
+				pickupRB.isKinematic = false;
+				c.isTrigger = false;
+			} else if (ThisThing.CompareTag("RedPortal")) {
+				MakePickupDisappear (other);
+				GameManager.instance.unlockRed ();
+			}
 		}
+	}
 
+	void MakePickupDisappear(Collider other) {
+		other.gameObject.SetActive (false);
+		ParticleSystem sys = ThisThing.GetComponentInChildren<ParticleSystem> ();
+		sys.Stop ();
+		source.clip = dropped_clip;
+		source.Play ();
 	}
 
 	//	void OnCollisionEnter(Collision collision) {

@@ -22,6 +22,7 @@ limitations under the License.
 using UnityEngine;
 using VR = UnityEngine.VR;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Shows the Oculus plaform UI.
@@ -53,10 +54,12 @@ public class OVRPlatformMenu : MonoBehaviour
 		ResetCursor,
 		ShowGlobalMenu,
 		ShowConfirmQuit,
+		ShowMainMenu,
 	};
 
 	public eHandler doubleTapHandler = eHandler.ResetCursor;
-	public eHandler shortPressHandler = eHandler.ShowConfirmQuit;
+	public eHandler shortPressMainMenuHandler = eHandler.ShowConfirmQuit;
+	public eHandler shortPressLevel1Handler = eHandler.ShowMainMenu;
 	public eHandler longPressHandler = eHandler.ShowGlobalMenu;
 
 	private GameObject instantiatedCursorTimer = null;
@@ -111,6 +114,7 @@ public class OVRPlatformMenu : MonoBehaviour
 
 		if ( Input.GetKeyDown( keyCode ) )
 		{
+			//Debug.Log ("yes!");
 			// just came down
 			downCount++;
 			if ( downCount == 1 )
@@ -186,11 +190,11 @@ public class OVRPlatformMenu : MonoBehaviour
 	/// </summary>
 	void Awake()
 	{
-		if (!OVRManager.isHmdPresent)
-		{
-			enabled = false;
-			return;
-		}
+//		if (!OVRManager.isHmdPresent)
+//		{
+//			enabled = false;
+//			return;
+//		}
 		if ((cursorTimer != null) && (instantiatedCursorTimer == null)) 
 		{
 			//Debug.Log("Instantiating CursorTimer");
@@ -262,12 +266,21 @@ public class OVRPlatformMenu : MonoBehaviour
 
 	void DoHandler(eHandler handler)
 	{
-		if (handler == eHandler.ResetCursor)
+		switch (handler) {
+		case eHandler.ResetCursor:
 			ResetCursor ();
-		if (handler == eHandler.ShowConfirmQuit)
+			break;
+		case eHandler.ShowConfirmQuit:
 			ShowConfirmQuitMenu ();
-		if (handler == eHandler.ShowGlobalMenu)
+			break;
+		case eHandler.ShowGlobalMenu:
 			ShowGlobalMenu ();
+			break;
+		case eHandler.ShowMainMenu:
+			GameManager.instance.GoingToMainMenu ();
+			SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+			break;
+		}			
 	}
 
 	/// <summary>
@@ -277,11 +290,26 @@ public class OVRPlatformMenu : MonoBehaviour
 	void Update()
 	{
 #if UNITY_ANDROID
-		eBackButtonAction action = HandleBackButtonState();
+		eBackButtonAction action;
+//		if (Application.isEditor) {
+//			action = HandleEditorBackButtonState();
+//		} else {
+//			action = HandleBackButtonState();
+//		}
+		action = HandleBackButtonState();
 		if ( action == eBackButtonAction.DOUBLE_TAP )
 			DoHandler(doubleTapHandler);
-		else if ( action == eBackButtonAction.SHORT_PRESS )
-			DoHandler(shortPressHandler);
+		else if ( action == eBackButtonAction.SHORT_PRESS ) {
+			string name = SceneManager.GetActiveScene().name;
+			if (name == "MainMenu") {
+				DoHandler(shortPressMainMenuHandler);
+			} else if (name == "Level1") {
+				DoHandler(shortPressLevel1Handler);
+			} else {
+				//#error Unrecognized scene
+				throw new System.Exception("Unrecognized scene");
+			}
+		}
 		else if ( action == eBackButtonAction.LONG_PRESS )
 			DoHandler(longPressHandler);
 #endif

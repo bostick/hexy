@@ -11,3 +11,11 @@ was just having a hell of a time with physics until I tried lowering the center 
 moving the center of mass to the ground really stabilizes the excavator!
 
 
+
+Feb 15, 2017
+
+ok, the Unity VR sample project is really cool and I can learn alot from it, specifically the Maze example
+
+I'm driving to Ann Arbor tomorrow for the A2 Game Designers meetup!
+
+

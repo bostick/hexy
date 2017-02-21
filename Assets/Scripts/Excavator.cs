@@ -6,9 +6,9 @@ public class Excavator : MonoBehaviour {
 	protected Rigidbody rb;
 
 	public Animator anim;
-	protected float rotSpeed = 75f;
-	protected float rotRevSpeed = 30f;
-	protected float driveSpeed = 2f;
+	protected float rotSpeed = 0;
+	protected float rotRevSpeed = 0;
+	//protected float driveSpeed = 2f;
 
 	protected float scrollSpeed = 0.5f;
 
@@ -37,6 +37,12 @@ public class Excavator : MonoBehaviour {
 	public GameObject WheelBackRight;
 
 
+	protected int leftTreadFrameCount = 0;
+	protected int rightTreadFrameCount = 0;
+	protected bool isDriving = false;
+	protected float leftTreadRotSpeed = 0;
+	protected float rightTreadRotSpeed = 0;
+
 	public void ExcavatorStart()
 	{
 
@@ -47,8 +53,82 @@ public class Excavator : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 	}
 
-	void FixedUpdate() {
-		
+	float sgn(float x) {
+		if (Mathf.Approximately (x, 0)) {
+			return 0;
+		} else if (x > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
+	public void ExcavatorFixedUpdate() {
+
+		if (leftTreadFrameCount > 5) {
+			isDriving = true;
+		} else if (leftTreadFrameCount < -5) {
+			isDriving = true;
+		} else if (rightTreadFrameCount > 5) {
+			isDriving = true;
+		} else if (rightTreadFrameCount < -5) {
+			isDriving = true;
+		} else {
+			isDriving = false;
+		}
+
+
+
+		if (isDriving && leftTreadFrameCount > 0) {
+			leftTreadRotSpeed = Mathf.Clamp (leftTreadRotSpeed + 0.1f * rotSpeed, 0, rotSpeed);
+		} else if (isDriving && leftTreadFrameCount < 0) {
+			leftTreadRotSpeed = Mathf.Clamp (leftTreadRotSpeed + 0.1f * -rotRevSpeed, -rotRevSpeed, 0);
+		} else {
+			//			leftTreadRotSpeed = leftTreadRotSpeed + 0.2f * -leftTreadRotSpeed;
+			//			if (Mathf.Abs(leftTreadRotSpeed) < 0.001f) {
+			//				leftTreadRotSpeed = 0;
+			//			}
+			leftTreadRotSpeed = 0;
+		}
+
+
+		if (isDriving && rightTreadFrameCount > 0) {
+			rightTreadRotSpeed = Mathf.Clamp (rightTreadRotSpeed + 0.1f * rotSpeed, 0, rotSpeed);
+		} else if (isDriving && rightTreadFrameCount < 0) {
+			rightTreadRotSpeed = Mathf.Clamp (rightTreadRotSpeed + 0.1f * -rotRevSpeed, -rotRevSpeed, 0);
+		} else {
+			//			rightTreadRotSpeed = rightTreadRotSpeed + 0.2f * -rightTreadRotSpeed;
+			//			if (Mathf.Abs(rightTreadRotSpeed) < 0.001f) {
+			//				rightTreadRotSpeed = 0;
+			//			}
+			rightTreadRotSpeed = 0;
+		}
+
+
+
+
+		// left tread
+		{
+			// apply torque
+			transform.RotateAround(rightTread.transform.position, Vector3.up, Time.deltaTime * leftTreadRotSpeed);
+
+			//Debug.Log (leftTreadRotSpeed);
+
+			// animate
+			offsetL = Time.time * sgn(leftTreadRotSpeed) * scrollSpeed % 1;
+			WheelFrontLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
+			WheelBackLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
+		}
+
+		// right tread
+		{
+			transform.RotateAround(leftTread.transform.position, -Vector3.up, Time.deltaTime * rightTreadRotSpeed);
+
+			offsetR = Time.time * sgn(rightTreadRotSpeed) * scrollSpeed % 1;
+			WheelFrontRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
+			WheelBackRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
+		}
+
 	}
 
 	public void ExcavatorUpdate() 

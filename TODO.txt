@@ -42,6 +42,10 @@ credits in the behind:
 
 fix graphics
 ✓ Take out seat
+bad shadows?
+flickering?
+
+I tried lowering the far plane to 600 from 1000. Maybe helped?
 
 
 particle systems
@@ -79,7 +83,39 @@ sound effects
 
 
 Closer to release:
+
+
+art assets:
+Submission Info > Assets
 look at art guidelines? https://static.oculus.com/documents/oculus-store-art-guidelines.pdf
+
+
+
+
+general best practices:
+https://developer3.oculus.com/documentation/game-engines/latest/concepts/unity-best-practices-intro/
+
+
+read through this:
+http://www.gamasutra.com/blogs/SamWatts/20160914/281338/Develop_Mobile_VR_w_Oculus__Gear_VR.php
+
+
+for sound:
+https://developer3.oculus.com/documentation/game-engines/latest/concepts/unity-best-practices-intro/#unity-mobile-audio
+
+mobile best practices:
+https://developer3.oculus.com/documentation/game-engines/latest/concepts/unity-mobile-performance-intro/
+
+
+
+publishing:
+https://developer3.oculus.com/documentation/publish/latest/
+
+
+
+
+
+
 
 
 
@@ -100,9 +136,6 @@ Reset rotation to 0 degrees
 fix missing materials on hex
 Circle001 ?
 
-
-fix graphics:
-bad shadows?
 
 haptic feedback for collisions?
 

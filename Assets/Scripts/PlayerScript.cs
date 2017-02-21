@@ -1,14 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections;
 
 public class PlayerScript : Excavator {
 
-	public AudioSource source;
+	private AudioSource engineSource;
+	private AudioSource boomSource;
+	private AudioSource stickSource;
+	private AudioSource bucketSource;
+
 	public AudioClip idling_clip;
 	public AudioClip driving_clip;
+	public AudioClip hydraulic_clip;
+	public AudioMixer mixer;
 
 	void Start()
 	{
+		rotSpeed = 75;
+		rotRevSpeed = 30;
+
 		ExcavatorStart ();
 
 		//set the bigarm to a non colliding position
@@ -18,12 +28,45 @@ public class PlayerScript : Excavator {
 
 		rb.centerOfMass = new Vector3(0, 0f, 0);
 
-		source.clip = idling_clip;
-		source.Play ();
+
+
+
+		//AudioMixer mainMix = Resources.Load("MainMix") as AudioMixer;
+
+		engineSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		engineSource.loop = true;
+		engineSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Driving")[0];
+		engineSource.clip = idling_clip;
+		engineSource.Play ();
+
+
+		boomSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		boomSource.loop = true;
+		boomSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Hydraulic")[0];
+		boomSource.clip = hydraulic_clip;
+		boomSource.pitch = 1.0f;
+		//boomSource.Play ();
+
+
+		stickSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		stickSource.loop = true;
+		stickSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Hydraulic")[0];
+		stickSource.clip = hydraulic_clip;
+		stickSource.pitch = 1.5f;
+		//stickSource.Play ();
+
+
+		bucketSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		bucketSource.loop = true;
+		bucketSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Hydraulic")[0];
+		bucketSource.clip = hydraulic_clip;
+		bucketSource.pitch = 2.0f;
+		//bucketSource.Play ();
+
+
 	}
 
-	private int leftTreadFrameCount = 0;
-	private int rightTreadFrameCount = 0;
+
 
 //	private bool leftTreadForward = false;
 //	private bool rightTreadForward = false;
@@ -32,35 +75,24 @@ public class PlayerScript : Excavator {
 	//private Gear leftTreadGear = Gear.Neither;
 	//private Gear rightTreadGear = Gear.Neither;
 
-	private float leftTreadRotSpeed = 0;
-	private float rightTreadRotSpeed = 0;
 
-	float sgn(float x) {
-		if (Mathf.Approximately (x, 0)) {
-			return 0;
-		} else if (x > 0) {
-			return 1;
-		} else {
-			return -1;
-		}
- 	}
+
+
 
 	void Update()
 	{
 		ExcavatorUpdate ();
 
-		if (isDriving && source.clip == idling_clip)
+		if (isDriving && engineSource.clip == idling_clip)
 		{
-			source.clip = driving_clip;
-			source.Play ();
+			engineSource.clip = driving_clip;
+			engineSource.Play ();
 
-		} else if (!isDriving && source.clip == driving_clip) {
-			source.clip = idling_clip;
-			source.Play ();
+		} else if (!isDriving && engineSource.clip == driving_clip) {
+			engineSource.clip = idling_clip;
+			engineSource.Play ();
 		}
 	}
-
-	private bool isDriving = false;
 
 	void FixedUpdate() {
 
@@ -114,70 +146,8 @@ public class PlayerScript : Excavator {
 		}
 
 
+		ExcavatorFixedUpdate ();
 
-		if (leftTreadFrameCount > 5) {
-			isDriving = true;
-		} else if (leftTreadFrameCount < -5) {
-			isDriving = true;
-		} else if (rightTreadFrameCount > 5) {
-			isDriving = true;
-		} else if (rightTreadFrameCount < -5) {
-			isDriving = true;
-		} else {
-			isDriving = false;
-		}
-
-
-
-		if (isDriving && leftTreadFrameCount > 0) {
-			leftTreadRotSpeed = Mathf.Clamp (leftTreadRotSpeed + 0.1f * rotSpeed, 0, rotSpeed);
-		} else if (isDriving && leftTreadFrameCount < 0) {
-			leftTreadRotSpeed = Mathf.Clamp (leftTreadRotSpeed + 0.1f * -rotRevSpeed, -rotRevSpeed, 0);
-		} else {
-//			leftTreadRotSpeed = leftTreadRotSpeed + 0.2f * -leftTreadRotSpeed;
-//			if (Mathf.Abs(leftTreadRotSpeed) < 0.001f) {
-//				leftTreadRotSpeed = 0;
-//			}
-			leftTreadRotSpeed = 0;
-		}
-
-
-		if (isDriving && rightTreadFrameCount > 0) {
-			rightTreadRotSpeed = Mathf.Clamp (rightTreadRotSpeed + 0.1f * rotSpeed, 0, rotSpeed);
-		} else if (isDriving && rightTreadFrameCount < 0) {
-			rightTreadRotSpeed = Mathf.Clamp (rightTreadRotSpeed + 0.1f * -rotRevSpeed, -rotRevSpeed, 0);
-		} else {
-//			rightTreadRotSpeed = rightTreadRotSpeed + 0.2f * -rightTreadRotSpeed;
-//			if (Mathf.Abs(rightTreadRotSpeed) < 0.001f) {
-//				rightTreadRotSpeed = 0;
-//			}
-			rightTreadRotSpeed = 0;
-		}
-
-
-
-
-		// left tread
-		{
-			// apply torque
-			transform.RotateAround(rightTread.transform.position, Vector3.up, Time.deltaTime * leftTreadRotSpeed);
-
-			//Debug.Log (leftTreadRotSpeed);
-
-			// animate
-			offsetL = Time.time * sgn(leftTreadRotSpeed) * scrollSpeed % 1;
-			WheelFrontLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
-			WheelBackLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
-		}
-
-		// right tread
-		{
-			transform.RotateAround(leftTread.transform.position, -Vector3.up, Time.deltaTime * rightTreadRotSpeed);
-
-			offsetR = Time.time * sgn(rightTreadRotSpeed) * scrollSpeed % 1;
-			WheelFrontRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
-			WheelBackRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
-		}
 
 
 
@@ -209,16 +179,32 @@ public class PlayerScript : Excavator {
 			(Input.GetKey (KeyCode.W) ||
 			OVRInput.Get (OVRInput.Axis2D.PrimaryThumbstick) [1] > 0.5f)
 			&& anim.GetInteger ("BigArmPosition") != 2) {
+
 			anim.SetInteger ("BigArmPosition", 1);
 			anim.SetFloat ("BigArmSpeed", 1f);
+
+			if (!boomSource.isPlaying) {
+				boomSource.Play ();
+			}
+
 		} else if (
 			(Input.GetKey (KeyCode.S) ||
 			OVRInput.Get (OVRInput.Axis2D.PrimaryThumbstick) [1] < -0.5f)
 			&& anim.GetInteger ("BigArmPosition") != 0) {
+
 			anim.SetInteger ("BigArmPosition", 1);
 			anim.SetFloat ("BigArmSpeed", -1f);
+
+			if (!boomSource.isPlaying) {
+				boomSource.Play ();
+			}
+
 		} else {
 			anim.SetFloat ("BigArmSpeed", 0);
+
+			if (boomSource.isPlaying) {
+				boomSource.Stop ();
+			}
 		}
 
 		//-------------------------------------------------------SMALL ARM-------------------------------------------------------------
@@ -229,6 +215,11 @@ public class PlayerScript : Excavator {
 		{
 			anim.SetInteger("SmallArmPosition",1);
 			anim.SetFloat("SmallArmSpeed",1f);
+
+			if (!stickSource.isPlaying) {
+				stickSource.Play ();
+			}
+
 		}
 		else if (
 			(Input.GetKey(KeyCode.DownArrow) ||
@@ -237,10 +228,18 @@ public class PlayerScript : Excavator {
 		{
 			anim.SetInteger("SmallArmPosition",1);
 			anim.SetFloat("SmallArmSpeed", -1f);
+
+			if (!stickSource.isPlaying) {
+				stickSource.Play ();
+			}
 		}
 		else
 		{
 			anim.SetFloat("SmallArmSpeed", 0);
+
+			if (stickSource.isPlaying) {
+				stickSource.Stop ();
+			}
 		}
 
 		//----------------------------------------------------------SHOVEL-----------------------------------------------------------------
@@ -251,6 +250,10 @@ public class PlayerScript : Excavator {
 		{
 			anim.SetInteger("ShovelPosition",1);
 			anim.SetFloat("ShovelSpeed", 1f);
+
+			if (!bucketSource.isPlaying) {
+				bucketSource.Play ();
+			}
 		}
 		else if (
 			(Input.GetKey(KeyCode.RightArrow) ||
@@ -259,16 +262,25 @@ public class PlayerScript : Excavator {
 		{
 			anim.SetInteger("ShovelPosition",1);
 			anim.SetFloat("ShovelSpeed", -1f);
+
+			if (!bucketSource.isPlaying) {
+				bucketSource.Play ();
+			}
 		}
 		else
 		{
 			anim.SetFloat("ShovelSpeed", 0);
+
+			if (bucketSource.isPlaying) {
+				bucketSource.Stop ();
+			}
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
 
-		if (other.gameObject.CompareTag ("Pick Up")) {
+		if (other.gameObject.CompareTag ("BluePickup") ||
+			other.gameObject.CompareTag ("RedPickup")) {
 
 			SphereCollider c = other.gameObject.GetComponent<SphereCollider> ();
 			if (c.isTrigger) {
