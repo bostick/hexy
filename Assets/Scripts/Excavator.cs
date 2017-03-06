@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class Excavator : MonoBehaviour {
 
@@ -30,11 +31,11 @@ public class Excavator : MonoBehaviour {
 	public GameObject rightTread;
 
 	//Big Wheels
-	public GameObject WheelFrontLeft;
-	public GameObject WheelFrontRight;
-
-	public GameObject WheelBackLeft;
-	public GameObject WheelBackRight;
+//	public GameObject WheelFrontLeft;
+//	public GameObject WheelFrontRight;
+//
+//	public GameObject WheelBackLeft;
+//	public GameObject WheelBackRight;
 
 
 	protected int leftTreadFrameCount = 0;
@@ -43,14 +44,57 @@ public class Excavator : MonoBehaviour {
 	protected float leftTreadRotSpeed = 0;
 	protected float rightTreadRotSpeed = 0;
 
+
+	protected AudioSource engineSource;
+	protected AudioSource boomSource;
+	protected AudioSource stickSource;
+	protected AudioSource bucketSource;
+
+	public AudioMixer mixer;
+
+
 	public void ExcavatorStart()
 	{
+		//anim = ;
 
 		// Materials for the Treads
 		matL = TreadsL.GetComponent<Renderer> ().material;
 		matR = TreadsR.GetComponent<Renderer> ().material;
 
 		rb = GetComponent<Rigidbody> ();
+
+
+		//AudioMixer mainMix = Resources.Load("MainMix") as AudioMixer;
+
+		engineSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		engineSource.loop = true;
+		engineSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Driving")[0];
+		engineSource.clip = GameManager.instance.idling_clip;
+		engineSource.Play ();
+
+
+		boomSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		boomSource.loop = true;
+		boomSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Hydraulic")[0];
+		boomSource.clip = GameManager.instance.hydraulic_clip;
+		boomSource.pitch = 1.0f;
+		//boomSource.Play ();
+
+
+		stickSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		stickSource.loop = true;
+		stickSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Hydraulic")[0];
+		stickSource.clip = GameManager.instance.hydraulic_clip;
+		stickSource.pitch = 1.5f;
+		//stickSource.Play ();
+
+
+		bucketSource = gameObject.AddComponent( typeof(AudioSource) ) as AudioSource;
+		bucketSource.loop = true;
+		bucketSource.outputAudioMixerGroup = mixer.FindMatchingGroups("Hydraulic")[0];
+		bucketSource.clip = GameManager.instance.hydraulic_clip;
+		bucketSource.pitch = 2.0f;
+		//bucketSource.Play ();
 	}
 
 	float sgn(float x) {
@@ -114,19 +158,21 @@ public class Excavator : MonoBehaviour {
 
 			//Debug.Log (leftTreadRotSpeed);
 
-			// animate
-			offsetL = Time.time * sgn(leftTreadRotSpeed) * scrollSpeed % 1;
-			WheelFrontLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
-			WheelBackLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
+			// animate wheels
+//			offsetL = Time.time * sgn(leftTreadRotSpeed) * scrollSpeed % 1;
+//			WheelFrontLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
+//			WheelBackLeft.transform.Rotate(-Vector3.forward * Time.deltaTime *leftTreadRotSpeed *4);
 		}
 
 		// right tread
 		{
+			// apply torque
 			transform.RotateAround(leftTread.transform.position, -Vector3.up, Time.deltaTime * rightTreadRotSpeed);
 
-			offsetR = Time.time * sgn(rightTreadRotSpeed) * scrollSpeed % 1;
-			WheelFrontRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
-			WheelBackRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
+			// animate wheels
+//			offsetR = Time.time * sgn(rightTreadRotSpeed) * scrollSpeed % 1;
+//			WheelFrontRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
+//			WheelBackRight.transform.Rotate(Vector3.forward * Time.deltaTime * rightTreadRotSpeed *4);
 		}
 
 	}
@@ -213,6 +259,20 @@ public class Excavator : MonoBehaviour {
 			matL.mainTextureOffset = new Vector2(0,offsetL);
 			matR.mainTextureOffset = new Vector2(0,offsetR);
 		}
+
+
+
+
+		if (isDriving && engineSource.clip != GameManager.instance.driving_clip)
+		{
+			engineSource.clip = GameManager.instance.driving_clip;
+			engineSource.Play ();
+
+		} else if (!isDriving && engineSource.clip != GameManager.instance.idling_clip) {
+			engineSource.clip = GameManager.instance.idling_clip;
+			engineSource.Play ();
+		}
+
 	}
 
 	//	void OnTriggerEnter(Collider other) {

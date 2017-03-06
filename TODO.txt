@@ -42,10 +42,11 @@ credits in the behind:
 
 fix graphics
 ✓ Take out seat
-bad shadows?
-flickering?
 
-I tried lowering the far plane to 600 from 1000. Maybe helped?
+
+
+
+
 
 
 particle systems
@@ -57,8 +58,6 @@ a little dust cloud when pickups fall
 a little explosion when pickups are dropped into portal
 
 
-add skybox
-night time?
 
 
 add sound fx
@@ -72,17 +71,43 @@ stick moving
 bucket moving
 pickups hitting the ground
 bucket dragging on ground
+bucket dragging against wall
 
 
 
-credits:
+
+## credits:
 excavator model
 music
-sound effects
+sound effects:
+    Unity asset store
+    free sound .org or something
 
 
 
-Closer to release:
+
+## Graphics issues:
+warning when building:
+Warning! Using antialiasing on a mobile device may decrease performance severely. You can change the mobile quality settings in 'Project Settings -> Quality Settings'.
+do we want antialiasing?
+
+
+bad shadows:
+flickering?
+I tried lowering the far plane to 600 from 1000. Maybe helped?
+remove shadows and use projector instead? what are projectors?
+ideas for fixing shadows:
+   turn off shadows for all meshes except for boom, stick, bucket
+   use projector for pickups?
+
+
+skybox?
+night time?
+
+
+
+
+## Closer to release:
 
 
 art assets:
@@ -108,6 +133,22 @@ https://developer3.oculus.com/documentation/game-engines/latest/concepts/unity-m
 
 
 
+optimizations:
+https://unity3d.com/learn/tutorials/topics/virtual-reality/optimisation-vr-unity?playlist=22946
+https://unity3d.com/learn/tutorials/topics/virtual-reality/optimisation-vr-unity
+
+
+
+Performance Auditing Tool
+https://developer3.oculus.com/documentation/game-engines/latest/concepts/unity-perf/#unity-perf-profiling-tools
+
+
+examine APK size and make sure contents are good
+unity profiler: https://unity3d.com/learn/tutorials/topics/interface-essentials/profiler-overview-beginners
+profile scene loading times
+
+
+
 publishing:
 https://developer3.oculus.com/documentation/publish/latest/
 
@@ -127,6 +168,12 @@ LATER:
 actually use real physics for everything
 https://grovecodeblog.wordpress.com/2013/10/30/combining-physics-and-animation-in-unity/
 https://gamedevelopment.tutsplus.com/articles/how-to-fix-common-physics-problems-in-your-game--cms-21418
+
+damage for player and enemy
+
+explosive barrels!
+
+
 
 
 

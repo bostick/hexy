@@ -19,3 +19,12 @@ ok, the Unity VR sample project is really cool and I can learn alot from it, spe
 I'm driving to Ann Arbor tomorrow for the A2 Game Designers meetup!
 
 
+
+Mar
+5, 2017
+
+I originally wanted to save game state while playing and hitting the back button to the main menu
+
+But the animator state of the player is getting all screwed up and I don't see how to restore an existing animator state
+So much to learn about animator stuff in Unity
+

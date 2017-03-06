@@ -4,44 +4,69 @@ using UnityEngine;
 
 public class Walls : MonoBehaviour {
 
+	public static Walls instance = null;
+
 	public GameObject EastLargeWall;
 	public GameObject SouthLargeWall;
 
 	private bool triggered = false;
 
-	// Use this for initialization
+	void Awake() {
+		if (instance == null) {
+			instance = this;
+
+			DontDestroyOnLoad (gameObject);
+
+		} else if (instance != this) {
+
+			Destroy (gameObject);
+
+			// game is resuming
+			instance.gameObject.SetActive (true);
+		} else {
+			throw new System.Exception ("how did this happen...");
+		}
+	}
+
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		
 	}
 
 	void FixedUpdate() {
 
-		if (Input.GetKey (KeyCode.P) ||
-			OVRInput.Get (OVRInput.Button.Four)) {
-			triggered = true;
-		}
-
-		if (triggered) {
-
-			if (SouthLargeWall.transform.position.z > -170.0f) {
-				SouthLargeWall.transform.position = SouthLargeWall.transform.position + 0.005f * Vector3.back;
-			} else {
-//				Rigidbody southRB = SouthLargeWall.GetComponent<Rigidbody> ();
-//				southRB.
+		switch (GameManager.instance.origin) {
+		case GameManager.Origin.Start:
+		case GameManager.Origin.Resume:
+			if (Application.isEditor && Input.GetKey (KeyCode.P) ||
+				OVRInput.Get (OVRInput.Button.Four)) {
+				triggered = true;
 			}
 
-			if (EastLargeWall.transform.position.x < 170.0f) {
-				EastLargeWall.transform.position = EastLargeWall.transform.position + 0.005f * Vector3.right;
-			} else {
-//				Rigidbody eastRB = EastLargeWall.GetComponent<Rigidbody> ();
+			if (triggered) {
+
+				if (SouthLargeWall.transform.position.z > -170.0f) {
+					SouthLargeWall.transform.position = SouthLargeWall.transform.position + 0.005f * Vector3.back;
+				}
+
+				if (EastLargeWall.transform.position.x < 170.0f) {
+					EastLargeWall.transform.position = EastLargeWall.transform.position + 0.005f * Vector3.right;
+				}
+
 			}
-
+			break;
+		case GameManager.Origin.Leaving:
+			// Update may still be called after GoingToMainMenu() has been called...
+			break;
+		default:
+			throw new System.Exception ("how did this happen...");
 		}
+	}
 
+	public void GoingToMainMenu() {
+		gameObject.SetActive (false);
 	}
 }

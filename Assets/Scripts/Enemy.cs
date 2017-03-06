@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyScript : Excavator {
+public class Enemy : Excavator {
 
-	private bool opening = true;
+//	private bool opening = true;
 
     void Start()
     {
+		ExcavatorStart ();
+
 		rotSpeed = 60;
 		rotRevSpeed = 20;
-
-		ExcavatorStart ();
 
         //set the bigarm to a non colliding position
         anim.SetFloat("BigArmSpeed", 10f);
@@ -70,8 +70,8 @@ public class EnemyScript : Excavator {
 //				GameManager.instance.player.transform.position.z));
 
 
-
-		Vector3 relative = transform.InverseTransformPoint(GameManager.instance.player.transform.position);
+		GameObject player = GameObject.Find("Player");
+		Vector3 relative = transform.InverseTransformPoint(player.transform.position);
 		float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
 
 		//Debug.Log (angle);

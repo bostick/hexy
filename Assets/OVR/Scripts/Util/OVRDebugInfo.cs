@@ -112,13 +112,16 @@ public class OVRDebugInfo : MonoBehaviour
     /// </summary>
     void Update()
     {
+		//Debug.Log ("update!");
         if (initUIComponent && !isInited)
         {
             InitUIComponents();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && riftPresentTimeout < 0.0f)
-        {
+        //if (Input.GetKeyDown(KeyCode.Space) && riftPresentTimeout < 0.0f)
+		if ((Application.isEditor && Input.GetKeyDown (KeyCode.Space) ||
+			OVRInput.GetDown (OVRInput.RawButton.B)) && riftPresentTimeout < 0.0f)
+		{
             initUIComponent = true;
             showVRVars ^= true;
         }
@@ -134,7 +137,9 @@ public class OVRDebugInfo : MonoBehaviour
         }
         else
         {
-            debugUIManager.SetActive(false);
+			if (debugUIManager != null) {
+				debugUIManager.SetActive(false);
+			}
         }
     }
 

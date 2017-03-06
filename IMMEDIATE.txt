@@ -1,0 +1,33 @@
+
+✓ completely fix loading and reloading scenes
+
+examine MazeRunner example and mimic that structure
+coroutines, etc.
+
+
+
+
+add decals around portals
+
+reticle
+look at items and info pops up:
+boom
+stick
+bucket
+pickups
+portals
+
+
+cardboard boxes
+
+rocks
+http://www.gamefromscratch.com/post/2017/01/31/Making-and-Breaking-Rocks-in-Blender.aspx
+
+
+
+Update to Unity 5.5.2 on Mac and Windows
+
+
+Update to Oculus Utilities for Unity 5 (Version 1.11.0)
+https://forums.oculus.com/developer/discussion/49553/oculus-utilities-for-unity-5-version-1-11-0
+1. Verify all manual changes made to the imported scripts first
