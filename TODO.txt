@@ -127,7 +127,7 @@ LATER:
 actually use real physics for everything
 https://grovecodeblog.wordpress.com/2013/10/30/combining-physics-and-animation-in-unity/
 https://gamedevelopment.tutsplus.com/articles/how-to-fix-common-physics-problems-in-your-game--cms-21418
-
+http://digitalopus.ca/site/using-rigid-bodies-in-unity-everything-that-is-not-in-the-manual/
 
 
 controls
